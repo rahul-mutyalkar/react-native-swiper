@@ -572,15 +572,15 @@ export default class extends Component {
   renderNextButton = () => {
     let button = null
 
-    if (this.props.loop ||
-      this.state.index !== this.state.total - 1) {
+    if (this.props.loop || this.state.index !== this.state.total - 1) {
       button = this.props.nextButton || <Text style={styles.buttonText}>›</Text>
+    } else if (this.props.loop || this.state.index === this.state.total - 1) {
+      button = this.props.finishButton || <Text style={styles.buttonText}>›</Text>
     }
-
     return (
       <TouchableOpacity
-        onPress={() => button !== null && this.scrollBy(1)}
-        disabled={this.props.disableNextButton}
+        onPress={() => button !== null && (this.state.index === this.state.total - 1 ? this.props.onFinish() : this.scrollBy(1))}
+        disabled={this.props.disableFinishButton}
       >
         <View>
           {button}
@@ -609,7 +609,7 @@ export default class extends Component {
     return (
       <View pointerEvents='box-none' style={[styles.buttonWrapper, {
         width: this.state.width,
-        height: this.state.height
+        height: this.state.height,
       }, this.props.buttonWrapperStyle]}>
         {this.renderPrevButton()}
         {this.renderNextButton()}
