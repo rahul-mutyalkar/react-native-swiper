@@ -524,6 +524,8 @@ export default class extends Component {
      // By default, dots only show when `total` >= 2
     if (this.state.total <= 1) return null
 
+    if (this.state.index === this.state.total - 1) return null
+
     let dots = []
     const ActiveDot = this.props.activeDot || <View style={[{
       backgroundColor: this.props.activeDotColor || '#007aff',
@@ -575,7 +577,7 @@ export default class extends Component {
     if (this.props.loop || this.state.index !== this.state.total - 1) {
       button = this.props.nextButton || <Text style={styles.buttonText}>›</Text>
     } else if (this.props.loop || this.state.index === this.state.total - 1) {
-      button = this.props.finishButton || <Text style={styles.buttonText}>›</Text>
+      button = null
     }
     return (
       <TouchableOpacity
@@ -593,8 +595,13 @@ export default class extends Component {
     let button = null
 
     if (this.props.loop || this.state.index !== 0) {
-      button = this.props.prevButton || <Text style={styles.buttonText}>‹</Text>
-    }
+      
+      if (this.props.loop || this.state.index === this.state.total - 1) { 
+        button = null
+      } else {
+        button = this.props.prevButton || <Text style={styles.buttonText}>‹</Text>
+      }
+    } 
 
     return (
       <TouchableOpacity onPress={() => button !== null && this.scrollBy(-1)}>
